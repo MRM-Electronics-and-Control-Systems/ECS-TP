@@ -1,0 +1,26 @@
+unsigned long previous=0;
+unsigned long duration=1000;
+int led = 12;
+int State = LOW;
+void setup()
+{
+  pinMode(led, OUTPUT);
+}
+
+void loop()
+{   
+  unsigned long current= millis();
+  if(current-previous>=duration)
+  {
+    previous = current;
+    if (State == LOW) {
+      State = HIGH;
+    }
+    else {
+      State = LOW;
+    }
+
+    digitalWrite(led,State);
+  }
+ 
+}
