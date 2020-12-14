@@ -1,0 +1,18 @@
+unsigned long pt=0;
+unsigned long interval=1000;
+void setup()
+{
+  pinMode(11, OUTPUT);
+}
+
+void loop()
+{   unsigned long ct= millis();
+if(ct-pt>=interval)
+{
+   digitalWrite(11, HIGH);
+  pt=ct;
+} 
+  digitalWrite(11, LOW);
+ delay(30);
+ 
+}
