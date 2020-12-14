@@ -1,0 +1,18 @@
+int prev_button=0;
+int ledstate=0;
+void setup()
+{
+  pinMode(7,INPUT);
+  pinMode(2,OUTPUT);
+}
+void loop()
+{
+  int ct_button=digitalRead(2);
+  if(prev_button==0 && ct_button==1 )
+  {
+  delay(5);
+    ledstate=!ledstate;
+  }
+  digitalWrite(7,ledstate);
+  prev_button=ct_button;
+}
