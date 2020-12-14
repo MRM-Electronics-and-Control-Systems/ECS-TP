@@ -1,0 +1,19 @@
+int pb2=4;
+int ledpin=13;
+int pb2s;
+void setup()
+{
+  
+  pinMode(pb2,INPUT);
+  pinMode(ledpin, OUTPUT);
+}
+
+void loop()
+{
+
+  pb2s=digitalRead(pb2);
+  if(pb2s==1)
+    digitalWrite(ledpin,LOW);
+  else
+    digitalWrite(ledpin,HIGH);
+}
