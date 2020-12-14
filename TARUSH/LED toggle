@@ -1,0 +1,32 @@
+int ls=0;
+int bn;
+int bo=0;
+
+void setup()
+{
+  pinMode(12, OUTPUT);
+pinMode(2,INPUT);
+}
+
+void loop()
+{
+  bn=digitalRead(2);
+  if(bo==0 && bn==1)
+  {
+    if(ls==0)
+    {
+      digitalWrite(12,HIGH);
+      ls=1;
+     
+    }
+    else
+    {
+      digitalWrite(12,LOW);
+      ls=0;
+       
+    }
+   
+  }
+  bo=bn;
+  delay(100);
+}
