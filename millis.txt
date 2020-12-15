@@ -1,0 +1,27 @@
+
+int led=13;
+unsigned long interval=1000;
+unsigned long previous =0;
+int ledstate;
+
+void setup()
+{
+  pinMode(led, OUTPUT);
+  
+}
+
+void loop()
+{
+  unsigned long current=millis();
+  
+  ledstate=digitalRead(led);
+  if(current-previous>=interval)
+ { 
+    if(ledstate==LOW)
+          ledstate=HIGH;
+    else
+       ledstate=LOW;
+  }
+   digitalWrite(led,ledstate);
+  previous=current;
+}
