@@ -1,0 +1,27 @@
+int pin = 9;
+int wait=1000;
+
+
+void setup()
+{
+  pinMode(pin,OUTPUT);
+  
+  }
+
+void loop()
+{
+  analogWrite(pin,255);//5v
+  delay(2000);
+  analogWrite(pin,100);
+  delay(2000);
+  analogWrite(pin,0);
+  
+  
+  analogWrite(pin,127);
+  delay(2000);
+  analogWrite(pin,100);
+  delay(2000);
+  analogWrite(pin,30);
+  
+  
+}
