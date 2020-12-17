@@ -1,0 +1,18 @@
+void setup()
+{
+  pinMode(12, OUTPUT);
+  pinMode(10,INPUT);
+  pinMode(7,INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  digitalWrite(12,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(12,LOW);
+  int duration=pulseIn(10,HIGH);
+  float distance=(duration-10)*0.034/2;
+  Serial.println(distance);
+  
+}
