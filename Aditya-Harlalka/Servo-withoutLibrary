@@ -1,0 +1,19 @@
+int servo = 9;
+int pot = A0;
+
+void setup(){
+  pinMode(servo, OUTPUT);
+  pinMode(pot, INPUT);
+  Serial.begin(9600);
+}
+
+void loop(){
+  int potVal = analogRead(pot);
+  Serial.println(potVal);
+  int val = map(potVal, 0, 1023, 0.5, 2);
+  int valOFF = 20 - val;
+  digitalWrite(servo,HIGH);
+  delay(val);
+  digitalWrite(servo,LOW);
+  delay(valOFF);
+}
