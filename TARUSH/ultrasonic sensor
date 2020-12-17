@@ -1,0 +1,21 @@
+int ptravel;
+int distance;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(12, OUTPUT);
+  pinMode(11,INPUT);
+}
+ 
+void loop()
+{
+  digitalWrite(12,LOW);
+  delayMicroseconds(10);
+  digitalWrite(12,HIGH);
+  delayMicroseconds(30);
+  digitalWrite(12,LOW);
+  ptravel=pulseIn(11,HIGH);//starts timing when 11th pin goes high and stops when it gets low
+  distance=ptravel*(0.034/2);// to convert distance in cm
+  Serial.println(distance);
+  
+}  
