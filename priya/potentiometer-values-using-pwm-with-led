@@ -1,0 +1,15 @@
+void setup()
+{
+  pinMode(3, OUTPUT);
+  pinMode(A0,INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int Pot_read= analogRead(A0);
+  Serial.println(Pot_read);
+ int Pwm=Pot_read/5;
+  digitalWrite(3,Pwm);
+  delay(500);
+}
