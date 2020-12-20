@@ -17,11 +17,12 @@ void loop()
   ledstate=digitalRead(led);
   if(current-previous>=interval)
  { 
+     previous=current;
     if(ledstate==LOW)
           ledstate=HIGH;
     else
        ledstate=LOW;
   }
    digitalWrite(led,ledstate);
-  previous=current;
+ 
 }
