@@ -1,0 +1,45 @@
+int buttonState=0;
+int count=0;
+void setup()
+{
+  pinMode(13, INPUT);
+  pinMode(8, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(2, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  buttonState=digitalRead(13);
+  
+  if (buttonState==0)
+  {}
+  else 
+  {
+    if(count<7)
+    { count++;
+     delay(200);
+    }
+    else
+    {count=0;
+     delay(200);
+    }
+  }
+  if(count%2 != 0)
+    digitalWrite(2,HIGH);
+  else
+    digitalWrite(2,LOW);
+  if(count==2 || count==3 || count==6 || count==7)
+    digitalWrite(4,HIGH);
+  else
+    digitalWrite(4,LOW);
+  if(count>=4 && count<=7)
+    digitalWrite(8,HIGH);
+  else
+    digitalWrite(8,LOW);
+  if (count>7 || count==0)
+    digitalWrite(2,LOW);
+    digitalWrite(4,LOW);
+    digitalWrite(8,LOW);
+}
