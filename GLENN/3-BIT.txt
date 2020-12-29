@@ -1,0 +1,123 @@
+//3 bit
+int p1=2;
+int p2=3;
+int p3=4;
+
+int buttonPin=12;
+int wait=1000;
+
+int N=0;
+
+int state;
+int previousState=0;
+
+
+void one()
+{
+ //001
+digitalWrite(p1,LOW);
+digitalWrite(p2,LOW);
+digitalWrite(p3,HIGH);
+//delay(wait);
+}
+
+void two()
+{
+ //010
+digitalWrite(p1,LOW);
+digitalWrite(p2,HIGH);
+//delay(wait);
+digitalWrite(p3,LOW);
+}
+
+void three()
+{
+ //011
+digitalWrite(p1,LOW);
+digitalWrite(p2,HIGH);
+//delay(wait);
+digitalWrite(p3,HIGH);
+//delay(wait);
+}
+
+void four()
+{
+ //100
+digitalWrite(p1,HIGH);
+//delay(wait);
+digitalWrite(p2,LOW);
+digitalWrite(p3,LOW);
+}
+
+void five()
+{ 
+//101
+digitalWrite(p1,HIGH);
+//  delay(wait);
+digitalWrite(p2,LOW);
+digitalWrite(p3,HIGH);
+//delay(wait);
+}
+void six()
+{
+//110
+digitalWrite(p1,HIGH);
+//delay(wait);
+digitalWrite(p2,HIGH);
+//delay(wait);
+digitalWrite(p3,LOW);
+//delay(wait);
+}
+
+
+
+void setup()
+{
+pinMode(p1,OUTPUT);
+pinMode(p2,OUTPUT);
+pinMode(p3,OUTPUT);
+
+pinMode(buttonPin,INPUT);
+  
+Serial.begin(9600); 
+  
+}
+
+void loop()
+{
+//int N=0;
+ 
+  state=digitalRead(buttonPin);
+ 
+  
+ if(state!=previousState)
+  {
+     if(state==HIGH)
+        N++;
+    Serial.println(N);
+  }
+    //delay(50);
+  
+  previousState=state;  
+ 
+  
+switch(N)
+{
+case 1:
+one();   break;
+case 2:
+two();   break;
+case 3:
+three(); break;
+case 4:
+four(); break;
+case 5:
+five(); break;
+case 6:
+six();   break;
+case 7:
+   N=0;
+  break;
+}//switch
+
+  }//loop
