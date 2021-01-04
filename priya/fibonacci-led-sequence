@@ -1,0 +1,45 @@
+int buttonState=0;
+int j;
+int count=0;
+int prevCount=0;
+int fib(int n)
+{
+  int f[n+2];
+  int i;
+  f[0]=0;
+  f[1]=1;
+  for(i=2;i<=n;i++)
+  {
+  f[i]=f[i-1]+f[i-2];
+  }
+  return f[n];
+}
+void setup()
+{
+  pinMode(2, OUTPUT);
+  pinMode(4,INPUT);
+  Serial.begin(9600);
+}
+void loop()
+{
+  buttonState=digitalRead(4);
+  if(buttonState==LOW)
+  {}
+  else
+  {
+    count++;
+    delay(100);
+  }
+  if(prevCount!=count)
+  {
+  int blink=fib(count);
+  for(j=0;j<blink;j++)
+  {
+    digitalWrite(2,HIGH);
+    delay(200);
+    digitalWrite(2,LOW);
+    delay(200);
+  }
+    prevCount=count;
+ }  
+}  
