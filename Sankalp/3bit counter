@@ -19,7 +19,7 @@ void loop() {
    }
    preState=curState;
  }
- int remain = (pushCount-1)%8;
+ int remain = (pushCount)%8;
  switch(remain){
   case 0:
    digitalWrite(led1,LOW);
