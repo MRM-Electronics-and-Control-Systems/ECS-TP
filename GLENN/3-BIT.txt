@@ -8,7 +8,7 @@ int wait=1000;
 
 int N=0;
 
-int state;
+int state=0;
 int previousState=0;
 
 
@@ -68,7 +68,19 @@ digitalWrite(p2,HIGH);
 digitalWrite(p3,LOW);
 //delay(wait);
 }
+void seven()
+{
+//111
 
+digitalWrite(p1,HIGH);
+//delay(wait);
+digitalWrite(p2,HIGH);
+//delay(wait);
+digitalWrite(p3,HIGH);
+//delay(wait);
+
+N=0;
+}
 
 
 void setup()
@@ -116,7 +128,7 @@ five(); break;
 case 6:
 six();   break;
 case 7:
-   N=0;
+   seven();
   break;
 }//switch
 
