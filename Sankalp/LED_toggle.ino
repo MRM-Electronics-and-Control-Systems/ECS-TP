@@ -10,8 +10,8 @@ void setup()
 void loop(){
   val = digitalRead(InPin);  
   if (val == HIGH) {         
-    digitalWrite(LedPin, LOW);  
+    digitalWrite(LedPin, HIGH);  
   } else {
-     digitalWrite(LedPin,HIGH); 
+     digitalWrite(LedPin,LOW); 
   }
 }
