@@ -1,0 +1,61 @@
+
+//SENDER
+//ARDUINO 1
+//UART, Rx,Tx
+
+int buttonPin=9;
+int state=0;
+int prev_state=0;
+void setup()
+{
+ Serial.begin(9600); 
+  pinMode(buttonPin,INPUT);
+}
+
+void loop()
+{
+  
+  state=digitalRead(buttonPin);
+  
+  //TOGGLE
+  if(state!=prev_state)
+  {
+    if(state==HIGH)
+    {
+      digitalWrite(buttonPin,HIGH); 
+    }
+    
+  prev_state=state;
+  
+}// main if
+
+int buttonState=digitalRead(buttonPin);
+Serial.write(buttonState);
+
+}
+-------------------------------------------------------------------------------------------------------------
+//RECEIVER
+//ARDUINO 2
+int ledPin=5;
+
+void setup()
+{
+  pinMode(ledPin,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int state_button =Serial.read();
+  
+  if(state_button==HIGH)
+  
+    digitalWrite(ledPin,HIGH);
+ else
+   
+   digitalWrite(ledPin,LOW);
+    
+ 
+}
+
+
