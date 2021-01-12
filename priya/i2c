@@ -1,0 +1,48 @@
+//master
+#include<Wire.h>
+void setup()
+{
+  pinMode(2, OUTPUT);
+  Wire.begin();
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  Wire.beginTransmission(9);
+  if(digitalRead(2) == HIGH)
+    Wire.write('1');
+  else
+    Wire.write('0');
+  Wire.endTransmission();
+}
+//slave
+#include<Wire.h>
+int prev_button=0;
+int ledstate=0;
+int ct_button;
+void setup()
+{
+  pinMode(7, INPUT);
+  Serial.begin(9600);
+  Wire.begin(9);
+  Wire.onReceive(blink);
+}
+void loop()
+{
+  delay(5);
+}
+void blink(int data)
+{
+  if(Wire.available()>0)
+  {
+  ct_button=Wire.read()-'0';
+  if(prev_button==0 && ct_button==1 )
+  {
+    delay(5);
+    ledstate=!ledstate;
+  }
+  digitalWrite(7,ledstate);
+  prev_button=ct_button;
+  }
+}
