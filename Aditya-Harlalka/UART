@@ -1,0 +1,42 @@
+const int buttonPin = 7;
+const int led = 13;
+int pushCount = 0;
+int state = 0;
+int previousState = 0;
+
+void setup(){
+  pinMode(buttonPin, INPUT);
+  pinMode(led, OUTPUT);
+  digitalWrite(led, LOW);
+  Serial.begin(9600);
+}
+
+void loop(){
+  //detecting a change in state and saving the no. of times a pushButton is pressed into a variable- pushCount
+  state = digitalRead(buttonPin);
+  if(state != previousState){
+    if(state == HIGH){
+      pushCount++;
+      Serial.println(pushCount);
+    }
+    delay(50);
+  }
+  previousState = state;
+  
+  //defining a variable- p, such that:
+  //p attains only 2 values depending on pushCount
+  //if p == 1; led must glow
+  //if p == 0; led is off;
+  int p = (pushCount%2);
+
+  if(Serial.available()){
+    char dataRcvd = Serial.read();    //read one byte of data recieved and save it into a variable
+
+    if(dataRcvd == '1') digitalWrite(led,HIGH);  //led  is on
+    if(dataRcvd == '0') digitalWrite(led,LOW);   //led is off
+  }
+
+  if(p == 1) Serial.write('1');      //send a char '1' if we want the led on the other device to glow
+  else Serial.write('0');            //send a char '0' if we want the led on the other device to glow
+  
+}
