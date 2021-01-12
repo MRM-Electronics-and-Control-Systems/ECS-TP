@@ -1,0 +1,38 @@
+//arduino 1
+void setup()
+{
+  pinMode(4,OUTPUT);
+  Serial.begin(9600);
+}
+void loop()
+{
+  if(digitalRead(4) == 1)
+    Serial.write('1');
+  else
+    Serial.write('0');
+  delay(5);
+}  
+  
+//arduino 2
+int prev_button=0;
+int ledstate=0;
+int ct_button;
+void setup()
+{
+  pinMode(8,INPUT);
+ Serial.begin(9600);
+}
+void loop()
+{
+  if(Serial.available()>0)
+  {
+  ct_button=Serial.read()-'0';
+  if(prev_button==0 && ct_button==1 )
+  {
+  delay(5);
+    ledstate=!ledstate;
+  }
+  digitalWrite(8,ledstate);
+  prev_button=ct_button;
+  }
+}
