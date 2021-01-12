@@ -1,0 +1,76 @@
+//Master
+
+int but = 12;
+
+bool ebut = LOW;;
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize the digital pin as an output.
+ 
+  pinMode(but, INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  
+  ebut=digitalRead(but);
+  
+ 
+  
+ switch (ebut)
+{
+   case HIGH:
+     Serial.println("B");
+   break;
+
+   case LOW:
+      Serial.println("b");
+   break;
+
+   default:
+   break; 
+}  
+  
+  
+  delay(500);
+}  
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Slave
+int led = 13;
+
+char ch;
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize the digital pin as an output.
+  pinMode(led, OUTPUT);
+ 
+  Serial.begin(9600);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  
+  if(Serial.available()>0){
+   ch= Serial.read();
+    Serial.print(ch);
+  
+    switch (ch)
+{
+   case 'B':
+      
+     digitalWrite(led, HIGH);
+   break;
+
+   case 'b':
+      digitalWrite(led, LOW);
+   break;
+   
+   
+
+   default:
+   break; 
+}
+  }
+}
