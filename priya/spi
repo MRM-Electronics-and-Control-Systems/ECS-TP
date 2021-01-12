@@ -1,0 +1,66 @@
+//master
+#include<SPI.h>
+const int slavepin=10;
+int ct_button;
+void setup()
+{
+  SPI.begin();
+  Serial.begin(9600);
+  pinMode(slavepin,OUTPUT);
+  pinMode(2, OUTPUT);
+  digitalWrite(slavepin,HIGH);
+}
+void loop()
+{
+  digitalWrite(slavepin,LOW);
+  ct_button=digitalRead(2);
+  Serial.println(ct_button);
+  if(ct_button==HIGH)
+  {SPI.transfer(1);
+    Serial.println("transferred");
+   digitalWrite(slavepin,HIGH);
+  }
+  else
+  { 
+   SPI.transfer(0);
+     Serial.println("transferred");
+   digitalWrite(slavepin,HIGH);
+  }
+  
+   delay(5);
+}
+//slave
+#include<SPI.h>
+int prev_button=0;
+int ledstate=0;
+bool flag=0;
+byte ct_button;
+void setup()
+{
+  pinMode(7, INPUT);
+  Serial.begin(9600);
+  pinMode(MISO,OUTPUT);
+  SPCR |=_BV(SPE);
+  SPCR |=_BV(SPIE);
+  
+}
+ISR (SPI_STC_vect)
+{
+  ct_button=SPDR;
+  flag=1;
+}
+void loop()
+{
+   Serial.println(ct_button);
+  if(flag==1)
+  {
+  if(prev_button==0 && ct_button==1 )
+  {
+  delay(5);
+    ledstate=!ledstate;
+  }
+  digitalWrite(7,ledstate);
+  prev_button=ct_button;
+    flag=0;
+  }
+}
