@@ -1,0 +1,117 @@
+//Master
+
+#include <Wire.h>
+
+const int buttonPin = 7;
+int pushCount = 0;
+int state =0;
+int previousState = 0;
+const int led = 13;
+byte i2c_rcv;  //data received from I2C
+int stat_LED;  //variable denoting the status of Led
+
+void setup(){
+  Wire.begin(); // join i2c bus as master
+  
+  pinMode(buttonPin,INPUT);
+  pinMode(led,OUTPUT);
+  stat_LED = 0; //state of led of the slave 
+  i2c_rcv = 0; // data received from slave
+}
+
+void loop(){
+  //reading pushbutton state
+  state = digitalRead(buttonPin);
+  if(state != previousState){
+    if(state == HIGH){
+      pushCount++;
+     //erial.println(pushCount);
+    }
+    delay(50);
+  }
+  previousState = state;
+  
+  //defining of the led on slave
+  stat_LED = (pushCount%2);
+
+  //send led state to slave
+  Wire.beginTransmission(0x08);
+  Wire.write(stat_LED);
+  Wire.endTransmission();
+  
+  //receive data from slave
+  Wire.requestFrom(0x08, 1);
+  if(Wire.available()){
+    i2c_rcv = Wire.read();
+  }
+
+  //controlling state of led on master
+  if(i2c_rcv == 1){
+    digitalWrite(led, HIGH);
+  }
+  if(i2c_rcv == 0){
+    digitalWrite(led, LOW);
+  }
+  
+}
+
+
+//i2c_slave
+
+
+#include <Wire.h>
+byte i2c_rcv;   //variable to store data received from master
+int stat_LED;   //defing state of led on master
+const int buttonPin = 7;
+int pushCount = 0;
+int state = 0;
+int previousState = 0;
+const int led = 13;
+
+void setup(){
+  Wire.begin(0x08); //join i2c bus as slave with address 0x08
+
+  Wire.onReceive(dataRcv);   //managing received data
+  Wire.onRequest(dataRqst);  //managing data requested by master
+  
+  i2c_rcv = 0;
+  stat_LED = 0;
+
+  pinMode(buttonPin, INPUT);
+  pinMode(led, OUTPUT);
+}
+
+void loop(){
+  //read pushButton on master 
+    state = digitalRead(buttonPin);
+  if(state != previousState){
+    if(state == HIGH){
+      pushCount++;
+      //Serial.println(pushCount);
+    }
+    delay(50);
+  }
+  previousState = state;
+
+  //variable defining state of led on master 
+  stat_LED = (pushCount%2);
+
+  if(i2c_rcv == 0){
+    digitalWrite(led, LOW);
+  }
+  if(i2c_rcv == 1){
+    digitalWrite(led, HIGH);
+  }
+}
+
+//receive data handler function
+void dataRcv(int numBytes){
+  while(Wire.available()){
+    i2c_rcv = Wire.read();  // read all bytes received
+  }
+}
+
+//reqested data handler function
+void dataRqst(){
+  Wire.write(stat_LED);  //send state of led of master
+}
