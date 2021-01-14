@@ -1,0 +1,64 @@
+//Master
+#include<Wire.h>
+int x=9;
+
+int val=0;
+int p=0;
+int ps=0;
+int push=0;
+
+
+void setup()
+{
+  Wire.begin();
+  pinMode(7,INPUT);
+}
+
+void loop()
+{
+  delay(20);
+  val=digitalRead(7);
+  if(val!=ps)
+  {
+    if(val==HIGH)
+      push++;
+    delay(50);
+  }
+  ps=val;
+  p=(push%2);
+  Wire.beginTransmission(x);
+  Wire.write(p);
+  Wire.endTransmission();
+  }
+  
+  //slave
+#include<Wire.h>
+int x=9;;
+
+int value;
+void setup()
+{
+  pinMode(13, OUTPUT);
+  Wire.begin(x);
+  Wire.onReceive(receive);
+  Serial.begin(9600);
+ }
+
+
+void receive(int16_t  byteCount)
+{
+  value=Wire.read();
+  
+}
+void loop()
+{ delay(50);
+ if(value==1)
+ { digitalWrite(13, HIGH);
+  delay(100);
+ }// Wait for 1000 millisecond(s)
+else
+{
+  digitalWrite(13, LOW);
+  delay(100); // Wait for 1000 millisecond(s)
+}
+}
