@@ -9,7 +9,7 @@ void loop() {
   x = digitalRead(12);//Reading value from Button
   Wire.beginTransmission(9);//9 here is the address of the slave board 
   Wire.write(x);//Transfers the value of button to the slave board            
-  Wire.endTransmission(); 
+
   Serial.print(x);
   delay(500);
 }
