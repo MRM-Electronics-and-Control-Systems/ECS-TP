@@ -10,10 +10,10 @@ void loop()
 {
 val=digitalRead(PUSH);
   if(val==HIGH){
-    Serial.write(HIGH);
+    Serial.write(1);
   }  
   else{
-    Serial.write(LOW);
+    Serial.write(0);
   }
 }
 -------------------------------------------------------------------------------------------------------------
@@ -25,11 +25,15 @@ void setup(){
   Serial.begin(9600);
 }
 void loop(){
+if(Serial.available()>0){
   val=Serial.read();
-  if (val==HIGH){
+  if (val==1){
     digitalWrite(Led,HIGH);
-  }
-  else{
+    }
+   else if(val==0){
     digitalWrite(Led,LOW);
+   }
+   
   }
+  
 }
