@@ -1,5 +1,5 @@
 //for master arduino
-#include < Wire.h > // <-- remove spaces
+#include<Wire.h> 
 
 int x =0;
 
@@ -59,7 +59,7 @@ delay(200);
 
 
 //for slave arduino
-#include < Wire.h > // <-- remove spaces
+#include<Wire.h> 
 
 int LED = 13;
 
