@@ -9,7 +9,7 @@ int value;
 void setup (void)
 
 {
-  Serial.begin(115200);               
+  Serial.begin(9600);               
   
   pinMode(push,INPUT);              
   pinMode(LED,OUTPUT);                  
@@ -63,7 +63,7 @@ int x;
 void setup()
 
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   pinMode(inputbutton,INPUT); 
   pinMode(outputLED,OUTPUT);               
