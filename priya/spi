@@ -1,0 +1,56 @@
+//MASTER
+#include<SPI.h>
+int pstate=0;
+int cstate;
+int lstate=0;
+void setup()
+{
+  pinMode(4, OUTPUT);
+  pinMode(SS, OUTPUT);
+  Serial.begin(9600);
+  SPI.begin();
+  digitalWrite(SS,HIGH);
+}
+void send(int ledstate)
+{
+  digitalWrite(SS, LOW);
+  SPI.transfer(ledstate);
+  digitalWrite(SS, HIGH);
+}
+void loop()
+{
+  cstate=digitalRead(4);
+  if(pstate==0 && cstate==1)
+  {
+    lstate= !lstate;
+    Serial.println(lstate);
+    send(lstate);
+  }
+  pstate=cstate;
+}
+//SLAVE
+#include<SPI.h>
+volatile boolean rcvd;
+volatile byte ct_button;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(7, INPUT);
+  SPCR |= _BV(SPE);
+  rcvd = false;
+  SPCR |= _BV(SPIE); 
+}
+ISR (SPI_STC_vect)                         
+{
+  ct_button = SPDR;
+  Serial.println(ct_button);
+  rcvd = true;                        
+}
+void loop()
+{
+  if(rcvd)
+  {
+    rcvd = false; 
+    digitalWrite(7, ct_button);
+  }
+}
