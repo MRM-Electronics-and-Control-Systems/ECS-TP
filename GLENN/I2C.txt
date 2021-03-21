@@ -1,0 +1,63 @@
+//I2C
+//MASTER
+#include<Wire.h>
+
+int buttonPin=8;
+void setup()
+{
+  Wire.begin(); // join i2c bus (address optional for master)
+}
+
+void loop()
+{
+  
+  int button_state=digitalRead(buttonPin);
+  
+  Wire.beginTransmission(4);
+  Wire.write(button_state);
+  
+  Wire.endTransmission();
+  
+  
+  delay(500);
+  
+}
+----------------------------------------------------------------------------------------------------------
+//SLAVE
+
+#include <Wire.h>
+
+int ledPin=12;
+void setup()
+{
+  Wire.begin(4);                
+  Wire.onReceive(receiveEvent); 
+  Serial.begin(9600);          
+}
+
+void loop()
+{
+  delay(100);
+}
+
+void receiveEvent(int data)
+{
+  
+  int state_button;
+  while(Wire.available()>0) 
+  {
+    state_button = Wire.read(); 
+   }
+    
+  if(state_button==HIGH)
+  {
+    digitalWrite(ledPin,HIGH);
+    Serial.println(state_button);
+  }
+  else
+  {
+    digitalWrite(ledPin,LOW);
+   Serial.println(state_button);
+  }
+  
+}
