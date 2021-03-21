@@ -1,14 +1,13 @@
-int LED = 9;
-int potentio = A0;
+int led = 3;
+int Poten = A0;
  
 void setup(){
   Serial.begin(9600);
-  pinMode(LED, OUTPUT);
-  pinMode(potentio, INPUT);
+  pinMode(led, OUTPUT);
+  pinMode(Poten, INPUT);
 }
 
 void loop(){
-  Serial.print(analogRead(pot));
-  analogWrite(LED,analogRead(pot));
-  delay(100);
+  Serial.println(analogRead(Poten));
+  analogWrite(led,analogRead(Poten));
 }
