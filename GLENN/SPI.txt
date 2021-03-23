@@ -1,0 +1,118 @@
+//ARDUINO 1
+//MASTER
+//SPI
+#include<SPI.h>
+int buttonPin=3;
+
+//int SS=10; //slave select;
+
+// *default*
+// MOSI =11;
+//MISO=12;
+//SCK=13;
+
+int state=0;
+int prev_state=0;
+
+void setup()
+{
+  pinMode(buttonPin,INPUT);
+  Serial.begin(9600);
+  SPI.begin();
+  
+  pinMode(MOSI,OUTPUT);
+  
+  //on clock
+  SPI.setClockDivider(SPI_CLOCK_DIV8);  
+  
+  //set slave to HIGH so that its not connected to master
+   digitalWrite(SS,HIGH);
+  
+}
+
+void loop()
+{
+  
+  state=digitalRead(buttonPin);
+  int count=0;
+  
+  if(state!=prev_state)
+  {
+    if(state==HIGH)
+    {
+      digitalWrite(buttonPin,HIGH);
+      Serial.println(count++);
+    } 
+  
+    prev_state=state;
+    
+  }//if
+  
+  int buttonState=digitalRead(buttonPin);
+  
+  //after getting buttonstate ,activate slave
+   digitalWrite(SS,LOW);
+  
+  //to send to slave
+  SPI.transfer(buttonState);
+  
+   
+  //after tranfer, reset slave to HIGH
+   digitalWrite(SS,HIGH);
+  
+}
+------------------------------------------------------------------------------------------------------------
+
+//SLAVE
+//ARDUINO 2
+#include<SPI.h>
+
+int ledPin=5;
+int state_button;
+
+volatile boolean process;
+
+void setup()
+{
+  
+ pinMode(ledPin,OUTPUT);
+ SPI.begin();
+  Serial.begin(9600);
+  
+  //
+  pinMode(MISO,OUTPUT);
+  process=false;
+  
+  //turn on SPI in slave mode
+  SPCR |= _BV(SPE);  
+  //turn on interrupt
+  SPI.attachInterrupt(); 
+  }
+
+
+
+
+  
+    ISR (SPI_STC_vect)                         
+{
+  //read transferred data from SPI data register 
+  state_button = SPDR;   
+      process=true;
+                         
+}
+
+void loop()
+{
+  
+  //toggle
+  if(process)
+  {
+  if(state_button==HIGH)
+     digitalWrite(ledPin,HIGH);
+  else
+     digitalWrite(ledPin,LOW);
+  }//process
+  
+  delay(1000);
+  
+}
