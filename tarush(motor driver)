@@ -1,0 +1,82 @@
+// motor code
+int xpin=A0;
+int ypin=A1;
+int spin=2;
+int xval;
+int yval;
+int sval;
+int ls=9;
+int ld=8;
+int rd=7;
+int rs=6;
+int leftspeed;
+int rightspeed;
+
+void setup() {
+ Serial.begin(9600);
+ pinMode(xpin,INPUT);
+ pinMode(ypin,INPUT);
+ pinMode(spin,INPUT);
+ pinMode(ls,OUTPUT);
+ pinMode(ld,OUTPUT);
+ pinMode(rs,OUTPUT);
+ pinMode(rd,OUTPUT);
+digitalWrite(spin,HIGH);
+}
+
+void loop() {
+  xval=analogRead(xpin);
+  yval=analogRead(ypin);
+  sval=digitalRead(spin);
+  delay(200);
+  Serial.print("x =");
+  Serial.print(xval);
+  Serial.print("y =");
+  Serial.print(yval);
+  Serial.print("switch =");
+  Serial.println(sval);
+  if(yval<511)
+  {
+    digitalWrite(ld,HIGH);
+    digitalWrite(rd,HIGH);
+    yval=((yval-512)*-1);
+    leftspeed=map(yval,0,512,0,255);
+    rightspeed=map(yval,0,512,0,255);
+  }
+  else if(yval>514)
+  {
+      digitalWrite(ld,LOW);
+      digitalWrite(rd,LOW);
+      leftspeed=map(yval,512,1023,0,255);
+      rightspeed=map(yval,512,1023,0,255);
+  }
+  else
+    {
+      leftspeed=0;
+      rightspeed=0;
+    }
+    if(xval<512)
+    {
+      yval=((yval-512)*-1);
+      yval=map(yval,0,512,0,255);
+      leftspeed=leftspeed-yval;
+      rightspeed=rightspeed+yval;
+      if(leftspeed<0)
+      leftspeed=0;
+      if(rightspeed>255)
+      rightspeed=255;
+    }
+    else if(xval>512)
+    {
+      xval=map(xval,512,1023,0,255);
+      leftspeed=leftspeed+xval;
+      rightspeed=rightspeed-xval;
+      if(leftspeed>255)
+      leftspeed=255;
+      if(rightspeed<0)
+      rightspeed=0;
+    }
+    analogWrite(ls,leftspeed);
+    analogWrite(rs,rightspeed);
+
+}
