@@ -101,7 +101,7 @@ if(y<127 && x>127)
    if((x+y)>=255)
    {
     direction(HIGH,HIGH); 
-    speedLeft=+=y;
+    speedLeft+=y;
     speedRight-=y;
    }
  }
@@ -142,7 +142,7 @@ if(y>127 && x<127)
   if(x+y<255)
   {
      direction(LOW,LOW);
-      speedLeft=+=y;
+      speedLeft+=y;
       speedRight-=y;
   }
  }
