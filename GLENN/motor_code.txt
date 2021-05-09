@@ -1,0 +1,101 @@
+int Xpin=A4;
+int Ypin=A5;
+int Spin=2;// switch pin{reads 1 or 0};
+int switch_status;
+//X and y values
+int x;
+int y;
+//direction pins
+int dir_left=3;
+int dir_right=4;
+//PWM pins
+//for controlling the speed of tyres
+int pwm_left=5;
+int pwm_right=6;
+
+//these values are written into pwm_left,pwm_right pins.
+int speedLeft;
+int speedRight;
+
+//these variables are for direction
+int dirLeft;
+int dirRight;
+
+void setup() {
+pinMode(Xpin,INPUT);
+pinMode(Ypin,INPUT);
+pinMode(Spin,INPUT);
+
+//LED pins
+pinMode(dir_right,OUTPUT);
+pinMode(dir_left,OUTPUT);
+pinMode(pwm_right,OUTPUT);
+pinMode(pwm_left,OUTPUT);
+
+Serial.begin(9600);
+digitalWrite(Spin,HIGH);
+
+}
+void direction (int dirLeft,int dirRight)
+{
+  digitalWrite(dir_left,dirLeft);
+  digitalWrite(dir_right,dirRight);
+}
+void loop() {
+  x=map(analogRead(Xpin),0,1023,0,255);
+  y=map(analogRead(Ypin),0,1023,0,255);
+
+//buffer
+ if(x>=120&&x<=130)
+  { x=127; }
+ if(y>=120&&y<=130)
+  {y=127; }
+
+ //forward control(depends on y axis values) 
+if(y<127)
+{
+  direction(1,1);
+    speedLeft=map(y,127,0,0,255);
+  speedRight=map(y,127,0,0,255);
+  //speedLeft=(127-y);
+  //speedRight=(127-y);
+}
+//bcakward control(depnds on y axis values)
+else if(y>127) 
+{
+  direction(0,0);
+  speedLeft=y;
+  speedRight=y;
+}
+//right control ( depends no x axis values)
+else if(x>127)
+{
+  direction(1,0);
+  speedLeft=speedLeft+x;
+  speedRight=speedRight-x;
+if(speedLeft>255)
+ speedLeft=255;
+if(speedRight<0)
+ speedRight=0; 
+  
+  }
+//right control ( depends no x axis values)
+ else if(x<127)
+{
+    direction(0,1);
+   speedLeft=speedLeft-map(x,127,0,0,255);
+   speedRight=speedRight+map(x,127,0,0,255);
+if(speedLeft<0)
+   speedLeft=0;
+if(speedRight>255) 
+ speedRight=255;  
+}
+else
+{
+ direction(0,0);
+ speedLeft=speedRight=0;
+}
+analogWrite(pwm_left,speedLeft);
+analogWrite(pwm_right,speedRight);
+
+}//loop
