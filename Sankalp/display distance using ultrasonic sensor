@@ -17,7 +17,7 @@ delay(2);
 digitalWrite(trig,HIGH);
 delay(10);
 digitalWrite(trig,LOW);
-duration=pulseIn(echo,HIGH);
+d=pulseIn(echo,HIGH);
 distance= d*0.034/2;
 Serial.print("Distance:");
 Serial.print("diatance);
